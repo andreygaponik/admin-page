@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="adminApp">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body ng-controller="AdminCtrl">
+
+	<header class="header">
+		<a href="#/home">Home</a>
+		<a href="#/users">Users</a>
+		<a href="#/groups">Groups</a>
+		<a href="#">Test page</a>
+	</header>
+	
+<!-- 	<span ng-bind="test">loading</span> -->
+
+	<div ng-view></div>
+
+
+
+
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/services.js"></script>
+
+	<!-- Firebase -->
+	<script src="bower_components/firebase/firebase.js"></script>
+	<script src="bower_components/angularfire/dist/angularfire.js"></script>
+	<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+</body>
+</html>
