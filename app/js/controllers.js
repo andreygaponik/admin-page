@@ -59,11 +59,83 @@ angular
 		$scope.userName = $routeParams.userName;
 });
 
+/* Firebase Sign in*/
+
 angular
-  .module('adminApp',['firebase'])
-  .controller('HomeCtrl', function($scope) {
- 	$scope.test = 'test'
-});
+  .module('adminApp')
+  .controller('HomeCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth) {
+
+    var firebaseObj = new Firebase("https://firstapp12345.firebaseio.com");
+    var loginObj = $firebaseAuth(firebaseObj);
+}]);
+
+/* Firebase Sign up*/
+
+angular
+  .module('adminApp')
+  .controller('RegisterCtrl', ['$scope', '$location', '$firebaseAuth', function($scope, $location, $firebaseAuth) {
+    var firebaseObj = new Firebase("https://firstapp12345.firebaseio.com/");
+    var auth = $firebaseAuth(firebaseObj);
+
+
+    $scope.signUp = function() {
+      if (!$scope.regForm.$invalid) {
+
+        var email = $scope.user.email;
+        var password = $scope.user.password;
+
+          if (email && password) {
+              auth.$createUser({
+                email,
+                password
+
+              }).then(function() {
+                  // do things if success
+                  console.log('User creation success');
+                  $location.path('/signin');
+
+                }, function(error) {
+                      // do things if failure
+                      console.log(error);
+
+                      $scope.regError = true;
+                      $scope.regErrorMessage = error.message;
+
+                  } );
+          }
+      }
+    };
+
+  }]);
+
+/* Firebase Sign in*/
+
+angular
+  .module('adminApp')
+  .controller('SignInCtrl', ['$scope', '$location', '$firebaseAuth', function($scope, $location, $firebaseAuth) {
+
+    var ref = new Firebase("https://firstapp12345.firebaseio.com/");
+
+    $scope.SignIn = function() {
+      var email = $scope.user.email;
+      var password = $scope.user.password; 
+
+      ref.authWithPassword({
+        email,
+        password
+      }).then(function() {
+        //Success callback
+        console.log('Authentication successful');
+        $location.path('/home');
+
+      }, function(error) {
+          //Failure callback
+          console.log('Authentication failure');
+        });
+    }
+
+  }]);
+
 
 // $scope.SignIn = function(event) {
 //     event.preventDefault(); // предотвращаем перезагрузку страницы

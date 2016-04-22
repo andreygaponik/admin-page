@@ -2,8 +2,11 @@
 
 angular.module('adminApp', [
 	'ngRoute',
-	'userServices'
+	'userServices',
+	'firebase'
 ]);
+
+
 
 /* Routers */
 
@@ -14,6 +17,14 @@ var RouterConfiguration = function($routeProvider) {
 		.when('/home', {
 			templateUrl: '../views/home.tpl.html',
 			controller: 'HomeCtrl'
+		})
+		.when('/register', {
+			templateUrl: '../views/register.tpl.html',
+			controller: 'RegisterCtrl'
+		})
+		.when('/signin', {
+			templateUrl: '../views/signin.tpl.html',
+			controller: 'SignInCtrl'
 		})
 		.when('/users', {
 			templateUrl: '../views/users-list.tpl.html',
@@ -29,7 +40,7 @@ var RouterConfiguration = function($routeProvider) {
 		})
 		
 		.otherwise({
-        redirectTo: '/home'
+        redirectTo: '/users'
       });
 };
 

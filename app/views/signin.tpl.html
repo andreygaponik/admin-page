@@ -1,0 +1,13 @@
+<div class="container" ng-controller="SignInCtrl">
+	<div class="jumbotron" style="padding-bottom:0px;">
+		<h2>Sign in</h2>
+	</div>
+	<form class="form-signin" role="form">
+		<input ng-model="user.email" type="email" class="form-control" placeholder="Email address" required="" autofocus="">
+		<input ng-model="user.password" type="password" class="form-control" placeholder="Password" required="">
+		<label class="checkbox">
+		<a href="#/register"> Sign Up<a/>
+		</label>
+		<button type="button" ng-click="SignIn()" class="btn btn-lg btn-primary btn-block">SignIn</button>
+	</form>
+</div>
