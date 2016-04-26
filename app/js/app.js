@@ -30,7 +30,7 @@ var RouterConfiguration = function($routeProvider) {
 			templateUrl: '../views/users-list.tpl.html',
 			controller: 'UserListCtrl'
 		})
-		.when('/users/:userName', {
+		.when('/users/:userId', {
       templateUrl: 'views/user-detail.tpl.html', 
       controller: 'UserDetailCtrl'
     })

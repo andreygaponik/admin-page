@@ -1,12 +1,22 @@
 <h1>test</h1>
 <!-- <p>Name <input class="username-edit"  placeholder="{{userName}}"></p> -->
-<span>detail view for {{userName}}</span> <br>
+<span>detail view for {{userId}}</span> <br>
 
-<!-- <span>First Name: {{firstName}}</span> -->
+<ul>
+  <li ng-repeat="($id, user) in users">
+  	<p>Name: 
+      <a href="#/users/{{user.$id}}" >
+        {{user.data.userName}}
+      </a>
+      
+      <input ng-model="user.userName" ng-change="users.$save(user)" />
+    </p>
+    <p> id: {{user.$id}}</p>
+  	<hr>
+  </li>
+</ul>
 
-<hr>
-
-
-
-
+<form ng-submit="addMessage()">
+  <input ng-model="newMessageText" />
+  <button type="submit">Add Message</button>
 </form>

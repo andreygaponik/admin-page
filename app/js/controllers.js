@@ -70,9 +70,24 @@ angular
 		
     var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
     $scope.users = $firebaseArray(firebaseData);
+    console.log($scope.users.data);
 
-    $scope.userName = $routeParams.userName;
+    $scope.userId = $routeParams.userId;
 
+      // add new items to the array
+      // the message is automatically added to our Firebase database!
+ 
+      var firebaseData1 = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog");
+
+      var usersData = firebaseData.child("users");
+
+      $scope.addMessage = function() {
+        usersData.push({
+          data: {
+            userName: $scope.newMessageText 
+          }
+        });
+      };
 
 
 }]);
