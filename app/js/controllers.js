@@ -5,8 +5,15 @@
 angular
   .module('adminApp')
   .controller('AdminCtrl', function($scope) {
- 	$scope.test = 'test'
+
 });
+
+angular
+  .module('adminApp')
+  .controller('HomeCtrl', 
+    ['$scope', '$location', '$firebaseAuth', function($scope, $location, $firebaseAuth) {
+    //
+  }]);
 
 
 // Display users 
@@ -34,7 +41,15 @@ angular
 
 angular
 	.module('adminApp')
-	.controller('UserListCtrl', function($scope, User) {
+	.controller('UserListCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) { // User argument 
+
+    var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
+
+    $scope.users = $firebaseArray(firebaseData);
+    console.log($scope.users);
+
+    // Display users of services.js
+    // *** $scope.users = User.query();
 
 		// Display users with $http
 
@@ -43,11 +58,7 @@ angular
 		// }).success(function(data) {
 		// 	$scope.users = data;
 		// });
-
-		// Display users of services.js
-
-		$scope.users = User.query();
-});
+}]);
 
 /*************************************/
 
@@ -55,18 +66,15 @@ angular
 
 angular
 	.module('adminApp')
-	.controller('UserDetailCtrl', function($scope, $routeParams) {
-		$scope.userName = $routeParams.userName;
-});
+	.controller('UserDetailCtrl', ['$scope', '$routeParams', '$firebaseArray', function($scope, $routeParams, $firebaseArray) {
+		
+    var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
+    $scope.users = $firebaseArray(firebaseData);
 
-/* Firebase Sign in*/
+    $scope.userName = $routeParams.userName;
 
-angular
-  .module('adminApp')
-  .controller('HomeCtrl', ['$scope', '$firebaseAuth', function($scope, $firebaseAuth) {
 
-    var firebaseObj = new Firebase("https://firstapp12345.firebaseio.com");
-    var loginObj = $firebaseAuth(firebaseObj);
+
 }]);
 
 /* Firebase Sign up*/
@@ -74,13 +82,16 @@ angular
 angular
   .module('adminApp')
   .controller('RegisterCtrl', ['$scope', '$location', '$firebaseAuth', function($scope, $location, $firebaseAuth) {
+    
     var firebaseObj = new Firebase("https://firstapp12345.firebaseio.com/");
     var auth = $firebaseAuth(firebaseObj);
-
 
     $scope.signUp = function() {
       if (!$scope.regForm.$invalid) {
 
+        var userName = $scope.user.userName;
+        var firstName = $scope.user.firstName;
+        var lastName = $scope.user.lastName;
         var email = $scope.user.email;
         var password = $scope.user.password;
 
@@ -90,8 +101,32 @@ angular
                 password
 
               }).then(function() {
-                  // do things if success
+                  // do things if successн
                   console.log('User creation success');
+
+                  // Добавляет данные пользователей в бд
+
+                  var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog");
+
+                  var usersData = firebaseData.child("users");
+
+                  usersData.push({
+                    data: {
+                      userName: userName,
+                      firstName: firstName,
+                      lastName: lastName,
+                      email: email            
+                    }
+                  });  
+
+                  // Выводит список юзеров
+
+                  // firebaseData.on("value", function(snapshot) {
+                  //   console.log(snapshot.val());
+                  // }, function (errorObject) {
+                  //   console.log("The read failed: " + errorObject.code);
+                  // });
+
                   $location.path('/signin');
 
                 }, function(error) {
@@ -108,6 +143,10 @@ angular
 
   }]);
 
+/*Firebase edit data*/
+
+
+
 /* Firebase Sign in*/
 
 angular
@@ -116,7 +155,8 @@ angular
 
     var ref = new Firebase("https://firstapp12345.firebaseio.com/");
 
-    $scope.SignIn = function() {
+    $scope.signIn = function() {
+
       var email = $scope.user.email;
       var password = $scope.user.password; 
 
@@ -125,31 +165,44 @@ angular
         password
       }).then(function() {
         //Success callback
-        console.log('Authentication successful');
-        $location.path('/home');
+          console.log('Authentication successful');
+          $location.path('/home');
 
-      }, function(error) {
-          //Failure callback
-          console.log('Authentication failure');
-        });
+          if (!$scope.$$phase) $scope.$apply(); // help if $location not working
+
+        }, function(error) {
+            //Failure callback
+            console.log('Authentication failure');
+
+          });
     }
 
   }]);
 
+angular
+  .module('adminApp')
+  .controller('TestCtrl', function($scope) {
+    var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog");
+    console.log('asd');
 
-// $scope.SignIn = function(event) {
-//     event.preventDefault(); // предотвращаем перезагрузку страницы
-//     var username = $scope.user.email;
-//     var password = $scope.user.password;
-//     loginObj.$login('password', {
-//         email: username,
-//         password: password
-//     })
-//         .then(function(user) {
-//             // колбэк запустится при успешной аутентификации аутентификацииSuccess callback
-//             console.log('Authentication successful');
-//         }, function(error) {
-//             // колбэк при неудаче
-//             console.log('Authentication failure');
-//         });
-// }
+
+                  firebaseData.on("value", function(snapshot) {
+                    console.log(snapshot.val());
+                  }, function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+                  });
+
+
+
+    // var usersRef = ref.child("users");
+    // usersRef.set  ({
+    //   alanisawesome: {
+    //     date_of_birth: "June 23, 1912",
+    //     full_name: "Andrew Andronik"
+    //   },
+    //   gracehop: {
+    //     date_of_birth: "December 9, 1906",
+    //     full_name: "Grace Hopper"
+    //   }
+    // });
+  })

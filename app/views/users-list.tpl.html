@@ -1,5 +1,5 @@
 <h1>Users</h1>
-
+<!-- 
 <ul>
   <li ng-repeat="user in users">
     <p>Name: <a href="#/users/{{user.name}}">{{user.name}}</a></p>
@@ -8,5 +8,33 @@
     <hr>
    </li>
 </ul>
+ -->
+<!-- <ul>	
+	<li ng-repeat="user in users">
+		<p>{{user.firstName}}</p>
+		<p>{{user.lastName}}</p>
+	</li>
+</ul> -->
+
+<ul>
+  <li ng-repeat="user in users">
+  	<p>Name: 
+      <a href="#/users/{{user.data.userName}}" >
+        {{user.data.userName}}
+      </a>
+    </p>
+  	<p>
+      First Name: {{ user.data.firstName }} 
+    </p>
+    <p> 
+      Last Name: {{ user.data.lastName }}
+    </p>
+    <p> id: {{user.$id}}</p>
+  	<hr>
+  </li>
+</ul>
+
+
+
 
 <div class="error" ng-bind="error"></div>

@@ -38,7 +38,10 @@ var RouterConfiguration = function($routeProvider) {
 			templateUrl: '../views/groups-list.tpl.html',
 			controller: 'AdminCtrl'
 		})
-		
+		.when('/test', {
+			templateUrl: '../views/test.tpl.html',
+			controller: 'TestCtrl'
+		})		
 		.otherwise({
         redirectTo: '/users'
       });
