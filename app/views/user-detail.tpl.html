@@ -1,22 +1,14 @@
-<h1>test</h1>
-<!-- <p>Name <input class="username-edit"  placeholder="{{userName}}"></p> -->
-<span>detail view for {{userId}}</span> <br>
+<div id="container">
+  <h1>User details</h1>
+  <p>*Data changes automatically</p>
+  <ul>
+    <li ng-repeat="user in data">
+      <p> User Name: <input ng-model="user.userName" ng-change="data.$save(user)" /> </p>
+      <p> First Name: <input ng-model="user.firstName" ng-change="data.$save(user)" /> </p>
+      <p> Last Name: <input ng-model="user.lastName" ng-change="data.$save(user)" /> </p>
+      <p> Email: <input ng-model="user.email" ng-change="data.$save(user)" /> </p>
+      <hr>
+    </li>
+  </ul>
 
-<ul>
-  <li ng-repeat="($id, user) in users">
-  	<p>Name: 
-      <a href="#/users/{{user.$id}}" >
-        {{user.data.userName}}
-      </a>
-      
-      <input ng-model="user.userName" ng-change="users.$save(user)" />
-    </p>
-    <p> id: {{user.$id}}</p>
-  	<hr>
-  </li>
-</ul>
-
-<form ng-submit="addMessage()">
-  <input ng-model="newMessageText" />
-  <button type="submit">Add Message</button>
-</form>
+</div>

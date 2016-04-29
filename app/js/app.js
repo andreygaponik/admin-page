@@ -2,11 +2,10 @@
 
 angular.module('adminApp', [
 	'ngRoute',
-	'userServices',
-	'firebase'
+	//'userServices',
+	'firebase',
+	'ui.bootstrap'
 ]);
-
-
 
 /* Routers */
 
@@ -44,7 +43,7 @@ var RouterConfiguration = function($routeProvider) {
 		})		
 		.otherwise({
         redirectTo: '/users'
-      });
+    });
 };
 
 RouterConfiguration.$inject = ['$routeProvider'];

@@ -1,40 +1,39 @@
-<h1>Users</h1>
-<!-- 
-<ul>
-  <li ng-repeat="user in users">
-    <p>Name: <a href="#/users/{{user.name}}">{{user.name}}</a></p>
-    <p>Id: {{user.id}}</p>
-    <p>Age: {{user.age}}</p>
-    <hr>
-   </li>
-</ul>
- -->
-<!-- <ul>	
-	<li ng-repeat="user in users">
-		<p>{{user.firstName}}</p>
-		<p>{{user.lastName}}</p>
-	</li>
-</ul> -->
+<div id="container">
+  <h1>Users</h1>
 
-<ul>
-  <li ng-repeat="user in users">
-  	<p>Name: 
-      <a href="#/users/{{user.$id}}" >
-        {{user.data.userName}}
-      </a>
-    </p>
-  	<p>
-      First Name: {{ user.data.firstName }} 
-    </p>
-    <p> 
-      Last Name: {{ user.data.lastName }}
-    </p>
-    <p> id: {{user.$id}}</p>
-  	<hr>
-  </li>
-</ul>
+  <h4>{{users.length}} total</h4>
 
+  <p>Search: <input ng-model="query"></p>
+  <ul>
+    <li ng-repeat="user in users | filter:query | startFrom: startingItem() | limitTo: itemsPerPage" >
+      <p>Name: 
+        <a href="#/users/{{user.$id}}" >
+          {{ user.data.userName }}
+        </a>
+      </p>
+      <p>
+        First Name: {{ user.data.firstName }} 
+      </p>
+      <p> 
+        Last Name: {{ user.data.lastName }}
+      </p>
+  <!--     <p> id: {{user.$id}}</p> -->
+      <hr>
+    </li>
+  </ul>
 
+  <div id="pagination" class="row">
+    <button class="pull-left btn btn-primary btn-sm" ng-disabled="firstPage()" ng-click="pageBack()">Previous</button>
+    <span>{{ currentPage + 1 }} of {{ numberOfPages() }}</span>
+    <button class="pull-right  btn btn-primary btn-sm" ng-disabled="lastPage()" ng-click="pageForward()">Next</button>
+  </div>
 
+<!-- <pagination 
+  ng-model="currentPage"
+  total-items="users.length"
+  max-size="maxSize"  
+  boundary-links="true">
+</pagination> -->
 
 <div class="error" ng-bind="error"></div>
+</div>

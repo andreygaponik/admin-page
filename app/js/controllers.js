@@ -15,80 +15,82 @@ angular
     //
   }]);
 
-
-// Display users 
-
-// angular
-// 	.module('adminApp')
-// 	.controller('UserList', function($scope) {
-// 	$scope.users = [
-//     {
-// 		  "name": "Andrew",
-// 		  "age": "24",
-// 		  "id": "0"
-// 		 },
-// 		 {
-// 		  "name": "Test",
-// 		  "age": "test age",
-// 		  "id": "1"
-// 		 }
-//   ];
-// });
-
-/*************************************/
-
-// Display users of UserList.json
-
 angular
 	.module('adminApp')
-	.controller('UserListCtrl', ['$scope', '$firebaseArray', function($scope, $firebaseArray) { // User argument 
+  .filter('startFrom', function(){
+    return function(input, start){
+      start = +start;
+      return input.slice(start);
+    }
+  })
+	.controller('UserListCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) { 
 
     var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
 
     $scope.users = $firebaseArray(firebaseData);
-    console.log($scope.users);
+
+    $scope.currentPage = 0;
+    $scope.itemsPerPage = 3;
+    
+    $scope.firstPage = function() {
+      return $scope.currentPage === 0;
+    }
+    $scope.lastPage = function() {
+      var lastPageNum = Math.ceil($scope.users.length / $scope.itemsPerPage - 1);
+      return $scope.currentPage === lastPageNum;
+    }
+    $scope.numberOfPages = function(){
+      return Math.ceil($scope.users.length / $scope.itemsPerPage);
+    }
+    $scope.startingItem = function() {
+      return $scope.currentPage * $scope.itemsPerPage;
+    }
+    $scope.pageBack = function() {
+      $scope.currentPage = $scope.currentPage - 1;
+    }
+    $scope.pageForward = function() {
+      $scope.currentPage = $scope.currentPage + 1;
+    }
+
+    // var sync = $firebaseArray(firebaseData.startAt($scope.users).endAt($scope.users).limitToFirst(6));
+    // $scope.users = sync;
+
+
+    // $scope.filteredTodos = $scope.users;
+    // $scope.$watch('currentPage + numPerPage', function() {
+    //   var begin = (($scope.currentPage - 1) * $scope.numPerPage);
+    //   var end = begin + $scope.numPerPage;
+
+    //   $scope.filteredTodos = $scope.users.slice(begin, end);
+    //   console.log($scope.filteredTodos);
+
+    // });
+
 
     // Display users of services.js
     // *** $scope.users = User.query();
-
-		// Display users with $http
-
-		// $http.get('users/users.json').error(function(error) {
-		// 	$scope.error = 'Unable to find a users file'
-		// }).success(function(data) {
-		// 	$scope.users = data;
-		// });
 }]);
 
 /*************************************/
 
-// Link on user detail
+/*Firebase detail user and edit data*/
 
 angular
 	.module('adminApp')
-	.controller('UserDetailCtrl', ['$scope', '$routeParams', '$firebaseArray', function($scope, $routeParams, $firebaseArray) {
+	.controller('UserDetailCtrl', ['$scope', '$routeParams', '$firebaseArray', '$firebaseObject',
+    function($scope, $routeParams, $firebaseObject, $firebaseArray) {
 		
-    var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
-    $scope.users = $firebaseArray(firebaseData);
-    console.log($scope.users.data);
+    // var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
+    // $scope.users = $firebaseArray(firebaseData);
+    // console.log($scope.users);
 
     $scope.userId = $routeParams.userId;
 
-      // add new items to the array
-      // the message is automatically added to our Firebase database!
- 
-      var firebaseData1 = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog");
+    var firebaseDataInput = new Firebase(
+        "https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users" + '/' 
+        + $scope.userId);
 
-      var usersData = firebaseData.child("users");
-
-      $scope.addMessage = function() {
-        usersData.push({
-          data: {
-            userName: $scope.newMessageText 
-          }
-        });
-      };
-
+    $scope.data = $firebaseObject(firebaseDataInput);
 
 }]);
 
@@ -122,7 +124,6 @@ angular
                   // Добавляет данные пользователей в бд
 
                   var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog");
-
                   var usersData = firebaseData.child("users");
 
                   usersData.push({
@@ -157,10 +158,6 @@ angular
     };
 
   }]);
-
-/*Firebase edit data*/
-
-
 
 /* Firebase Sign in*/
 
@@ -199,14 +196,6 @@ angular
   .controller('TestCtrl', function($scope) {
     var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog");
     console.log('asd');
-
-
-                  firebaseData.on("value", function(snapshot) {
-                    console.log(snapshot.val());
-                  }, function (errorObject) {
-                    console.log("The read failed: " + errorObject.code);
-                  });
-
 
 
     // var usersRef = ref.child("users");

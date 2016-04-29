@@ -2,6 +2,16 @@ li {
 	list-style-type: none;
 }
 
+#container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+#pagination {
+  max-width: 400px;
+  text-align: center;
+}
+
 /*Style for form sing in*/
 
 .form-signin {
