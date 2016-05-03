@@ -1,1 +1,23 @@
-<h1>Groups</h1>
+<div id="container">
+	<h1>Groups</h1>
+	<ul>
+    <li ng-repeat="group in groups">
+      <!-- <input ng-model="group.groupName" ng-change="groups.$save(group)" /> -->
+<!--       <input ng-model="group.title" ng-change="groups.$save(group)" /> -->
+			
+			<!-- add a message -->
+      <a href="#/groups/{{group.$id}}" ng-bind="group.data.groupName"></a> <br>
+      <span ng-bind="group.data.title"></span>
+
+      <!-- delete a message -->
+      <button ng-click="groups.$remove(group)">Delete Message</button>
+
+    </li>
+  </ul>
+
+	<form ng-submit="addGroup()">
+    <input ng-model="newGroup" />
+    <input ng-model="newTitle" />
+    <button type="submit">Add Group</button>
+   </form>
+</div>

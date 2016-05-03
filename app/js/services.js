@@ -25,7 +25,7 @@
 
 // 		return {
 // 			getUserById: function() {
-c
+
 // 				return $firebaseObject(firebaseDataInput)
 // 			}
 // 		}

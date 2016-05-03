@@ -3,8 +3,7 @@
 angular.module('adminApp', [
 	'ngRoute',
 	//'userServices',
-	'firebase',
-	'ui.bootstrap'
+	'firebase'
 ]);
 
 /* Routers */
@@ -35,7 +34,11 @@ var RouterConfiguration = function($routeProvider) {
     })
 		.when('/groups', {
 			templateUrl: '../views/groups-list.tpl.html',
-			controller: 'AdminCtrl'
+			controller: 'GroupsCtrl'
+		})
+		.when('/groups/:groupId', {
+			templateUrl: 'views/group-detail.tpl.html',
+			controller: 'GroupDetailCtrl'
 		})
 		.when('/test', {
 			templateUrl: '../views/test.tpl.html',
