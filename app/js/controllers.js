@@ -11,9 +11,14 @@ angular
 angular
   .module('adminApp')
   .controller('HomeCtrl', 
-    ['$scope', '$location', '$firebaseAuth', function($scope, $location, $firebaseAuth) {
-    //
+    ['$scope', '$location', '$firebaseAuth', '$firebaseArray', function($scope, $location, $firebaseAuth, $firebaseArray) {
+    
+    var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
+
+    $scope.users = $firebaseArray(firebaseData);
+    console.log($scope.users);
   }]);
+
 
 angular
   .module('adminApp')
@@ -23,7 +28,7 @@ angular
       return input.slice(start);
     }
   })
-  .controller('UserListCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) { 
+  .controller('UserListCtrl', ['$scope', '$firebaseArray', '$firebaseObject', 'CommonProp', function($scope, $firebaseArray, $firebaseObject, CommonProp) { 
 
     var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users");
 
@@ -38,10 +43,11 @@ angular
 
     $scope.lastPage = function() {
       var lastPageNum = Math.ceil($scope.users.length / $scope.itemsPerPage - 1);
+
       return $scope.currentPage === lastPageNum;
     }
 
-    $scope.numberOfPages = function(){
+    $scope.numberOfPages = function() {
       return Math.ceil($scope.users.length / $scope.itemsPerPage);
     }
 
@@ -59,7 +65,14 @@ angular
 
     console.log($scope.users);
 
-}]);
+  }])
+//
+  .service('CommonProp', function() {
+    var user = '';
+ 
+    return console.log('asd')
+  });
+
 
 /*************************************/
 
@@ -75,13 +88,13 @@ angular
     // console.log($scope.users);
 
     $scope.userId = $routeParams.userId;
+    console.log($scope.userId);
 
     var firebaseDataInput = new Firebase(
         "https://firstapp12345.firebaseio.com/web/saving-data/fireblog/users" + '/' 
         + $scope.userId);
 
     $scope.data = $firebaseObject(firebaseDataInput);
-    console.log($scope.data.$id);
 
 }]);
 
@@ -162,6 +175,7 @@ angular
         //Success callback
           console.log('Authentication successful');
           $location.path('/home');
+          console.log($scope.user);
 
           if (!$scope.$$phase) $scope.$apply(); // help if $location not working
 
@@ -176,7 +190,7 @@ angular
 
 angular
   .module('adminApp')
-  .controller('GroupsCtrl', ['$scope', '$firebaseArray', '$firebaseObject', function($scope, $firebaseArray, $firebaseObject) {
+  .controller('GroupsCtrl', ['$scope', '$firebaseArray', '$firebaseObject', 'CommonProp', function($scope, $firebaseArray, $firebaseObject, CommonProp) {
     var firebaseData = new Firebase("https://firstapp12345.firebaseio.com/web/saving-data/fireblog/groups");
 
     $scope.groups = $firebaseArray(firebaseData);
@@ -190,9 +204,30 @@ angular
       });
     };
 
+    // var ab = CommonProp.setUser(user.a);
+    // $scope.username = CommonProp.getUser();
+
+
+    // console.log($scope.username);
+
+
   }]);
 
+angular
+  .module('adminApp')
+  .controller('GroupDetailCtrl', ['$scope', '$routeParams', '$firebaseArray', '$firebaseObject',
+    function($scope, $routeParams, $firebaseObject, $firebaseArray) {
 
+
+    $scope.groupId = $routeParams.groupId;
+
+    var firebaseDataInput = new Firebase(
+        "https://firstapp12345.firebaseio.com/web/saving-data/fireblog/groups" + '/' 
+        + $scope.groupId);
+
+    $scope.data = $firebaseArray(firebaseDataInput);
+
+}]);
 
 angular
   .module('adminApp')
